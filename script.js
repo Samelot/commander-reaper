@@ -1,6 +1,6 @@
 (function (window) {
-    var autocomplete,
-        commands,
+    var actions,
+        autocomplete,
         onload,
         search,
         $searchBox;
@@ -9,36 +9,14 @@
     window.onload = function () {
         if (onload) onload();
         $searchBox = window.document.getElementById('search-box');
-        console.log($searchBox);
-
-        $searchBox.addEventListener('keydown', function (e) {
-            var part,
-                result,
-                results;
-
+        $searchBox.addEventListener('keyup', function (e) {
+            var part;
             part = $searchBox.value;
-            console.log(part);
-
             autocomplete(part);
-
-            result = window.document.createElement('div')
-            result.classList.add('some-class');
-            results = window.document.getElementsByClassName('results')[0];
-            results.appendChild(result);
-            result.innerHTML = 'foodog';
         });
     };
-    
-    autocomplete = function (part) {
-        var matches;
 
-        matches = search(part);
-
-        console.log(matches);
-        return "t";
-    };
-
-    commands = [
+    actions = [
         {
             "name": "Edit: Copy items/tracks/envelope points (depending on focus) ignoring time selection",
             "code": 40057,
@@ -69,14 +47,57 @@
         }
     ];
 
-    search = function (part) {
-        var i,
-            matches;
+
+    autocomplete = function (part) {
+        var matches,
+            $results;
+
+        $results = window.document.getElementsByClassName('results')[0];
+        $results.innerHTML = '';
+
+        if (!part) return;
+
+        matches = search(part);
+        for (var i = 0; i < matches.length; i++) {
+            var $match;
+            $match = window.document.createElement('li');
+            $match.innerHTML = matches[i].name;
+            $results.appendChild($match);
+        }
+    };
+
+    search = function (searchInput) {
+        var matches,
+            searchWords;
 
         matches = [];
-        for (i = 0; i < commands.length; i++) {
-            if (-1 < commands[i].name.indexOf(part)) {
-                matches.push(commands[i]);
+
+        // Split search input into non-empty words
+        searchWords = searchInput.toUpperCase().split(' ').filter(function (searchWord) {
+            return '' !== searchWord;
+        });
+
+        for (var i = 0; i < actions.length; i++) {
+            var action,
+                actionNameUpperCase,
+                isMatch;
+
+            action = actions[i];
+            actionNameUpperCase = action.name.toUpperCase();
+            isMatch = true;
+
+            for (var j = 0; j < searchWords.length; j++) {
+                var searchWord;
+
+                searchWord = searchWords[j];
+
+                if (-1 === actionNameUpperCase.indexOf(searchWord)) {
+                    isMatch = false;
+                    break;
+                }
+            }
+            if (isMatch) {
+                matches.push(action);
             }
         }
         return matches;
