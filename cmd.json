@@ -1,0 +1,30 @@
+[
+    {
+        "name": "Edit: Copy items/tracks/envelope points (depending on focus) ignoring time selection",
+        "code": 40057,
+    },
+    {
+        "name": "Edit: Copy items/tracks/envelope points (depending on focus) within time selection, if any (smart copy)",
+        "code": 41383
+    },
+    {
+        "name": "Edit: Cut items",
+        "code": 40699
+    },
+    {
+        "name": "Edit: Cut items/tracks/envelope points (depending on focus) ignoring time selection",
+        "code": 40059
+    },
+    {
+        "name": "Edit: Cut items/tracks/envelope points (depending on focus) within time selection, if any (smart cut)",
+        "code": 41384
+    },
+    {
+        "name": "Edit: Redo",
+        "code": 40030
+    },
+    {
+        "name": "Edit: Undo",
+        "code": 40029
+    }
+]
