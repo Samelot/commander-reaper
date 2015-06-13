@@ -19,30 +19,42 @@
     actions = [
         {
             "name": "Edit: Copy items/tracks/envelope points (depending on focus) ignoring time selection",
+            "nameLowerCase": "edit: copy items/tracks/envelope points (depending on focus) ignoring time selection",
             "code": 40057,
         },
         {
             "name": "Edit: Copy items/tracks/envelope points (depending on focus) within time selection, if any (smart copy)",
+            "nameLowerCase": "edit: copy items/tracks/envelope points (depending on focus) within time selection, if any (smart copy)",
             "code": 41383
         },
         {
             "name": "Edit: Cut items",
+            "nameLowerCase": "edit: cut items",
             "code": 40699
         },
         {
             "name": "Edit: Cut items/tracks/envelope points (depending on focus) ignoring time selection",
+            "nameLowerCase": "edit: cut items/tracks/envelope points (depending on focus) ignoring time selection",
             "code": 40059
         },
         {
+            "name": "Cut items/tracks/envelope points (depending on focus) ignoring time selection edit",
+            "nameLowerCase": "cut items/tracks/envelope points (depending on focus) ignoring time selection edit",
+            "code": 66666
+        },
+        {
             "name": "Edit: Cut items/tracks/envelope points (depending on focus) within time selection, if any (smart cut)",
+            "nameLowerCase": "edit: cut items/tracks/envelope points (depending on focus) within time selection, if any (smart cut)",
             "code": 41384
         },
         {
             "name": "Edit: Redo",
+            "nameLowerCase": "edit: redo",
             "code": 40030
         },
         {
             "name": "Edit: Undo",
+            "nameLowerCase": "edit: undo",
             "code": 40029
         }
     ];
@@ -73,33 +85,40 @@
         matches = [];
 
         // Split search input into non-empty words
-        searchWords = searchInput.toUpperCase().split(' ').filter(function (searchWord) {
+        searchWords = searchInput.toLowerCase().split(' ').filter(function (searchWord) {
             return '' !== searchWord;
         });
 
+        // Find all actions that have all words in the search input
         for (var i = 0; i < actions.length; i++) {
-            var action,
-                actionNameUpperCase,
+            var actionName,
+                currentAction,
                 isMatch;
 
-            action = actions[i];
-            actionNameUpperCase = action.name.toUpperCase();
+            currentAction = actions[i];
+            actionName = currentAction.nameLowerCase;
             isMatch = true;
 
             for (var j = 0; j < searchWords.length; j++) {
-                var searchWord;
+                var currentSearchWord;
 
-                searchWord = searchWords[j];
+                currentSearchWord = searchWords[j];
 
-                if (-1 === actionNameUpperCase.indexOf(searchWord)) {
+                if (-1 === actionName.indexOf(currentSearchWord)) {
                     isMatch = false;
                     break;
                 }
             }
             if (isMatch) {
-                matches.push(action);
+                matches.push(currentAction);
             }
         }
+
+        // Order actions by the occurrence of the first search word
+        matches.sort(function (a, b) {
+            return a.nameLowerCase.indexOf(searchWords[0]) - b.nameLowerCase.indexOf(searchWords[0]);
+        });
+
         return matches;
     };
 })(window);
